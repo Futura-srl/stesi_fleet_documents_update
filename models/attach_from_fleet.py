@@ -52,7 +52,8 @@ class AttachFromFleetInherit(models.TransientModel):
     
     # description
     def create_documents(self):
-        id_log = 0
+        id_log = self.id
+        extension = self.get_file_extension_from_base64(self.file)
         if self.log_service_id.id != False:
             extension = self.get_file_extension_from_base64(self.file)
             id_log = self.log_service_id.id
