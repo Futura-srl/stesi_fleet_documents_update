@@ -60,8 +60,8 @@ class AttachFromFleetInherit(models.TransientModel):
         if self.contract_id.id != False:
             extension = self.get_file_extension_from_base64(self.file)
             id_log = self.contract_id.id
-        default_facet = self.env['documents.facet'].search([('default_facet_for_fleet', '=', True)])
-
+        # In 19 la cartella dei documenti dei mezzi e' configurata sull'azienda
+        # (documents_fleet_folder), non piu' ricavata da una documents.facet.
         document_name = self.fleet_id.name
         if self.tag_id:
             document_name += "_" + self.tag_id.name + "_" + str(id_log) + extension
@@ -72,5 +72,5 @@ class AttachFromFleetInherit(models.TransientModel):
             'fleet_id': self.fleet_id.id,
             'service_id': self.log_service_id.id if self.log_service_id else False,
             'contract_id': self.contract_id.id if self.contract_id else False,
-            'folder_id': default_facet.folder_id.id,
+            'folder_id': self.env.company.documents_fleet_folder.id,
         })
